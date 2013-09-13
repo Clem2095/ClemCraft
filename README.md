@@ -2,14 +2,19 @@
 
 ## Introduction
 
-Hello there,
+This repository is meant to host all my [ComputerCraft](http://www.computercraft.info/) Lua scripts.
+As long as I build my knowledge around the different APIs and the Lua language itself, this repository
+will be populated with various projects and scripts of any kind.
 
-I am Clem2095 and I am playing Minecraft since mid-2013.
-I am focused on the Feed The Beast Unleashed mod pack and I have few projects
-I would like to share with everyone.
+You will notice that any file within this repository is 'protected' under the GPL v2.0 licence,
+which you should read the disclaimer for full understanding.
 
-Please have a look to the codes there and feel free to use/reuse as per licence.
-(please note the licence is GPL v2.0, have a look at the licence for details)
+Basically, you can clone, use, reuse, alter, re-distribute any code in this repository as soon as:
+	1. You keep track that I am the original author of these programs
+	2. I am not reliable for any issue using any of these programs
+	3. You protect your new published code under GPL v2.0 (so, it can be freely reused/redistributed etc)
+	
+Please read the whole disclaimer within the [LICENCE](LICENCE) file.
 
 ## Projects
 
