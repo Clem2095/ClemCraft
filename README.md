@@ -10,11 +10,11 @@ You will notice that any file within this repository is 'protected' under the GP
 which you should read the disclaimer for full understanding.
 
 Basically, you can clone, use, reuse, alter, re-distribute any code in this repository as soon as:
-	1. You keep track that I am the original author of these programs
-	2. I am not reliable for any issue using any of these programs
-	3. You protect your new published code under GPL v2.0 (so, it can be freely reused/redistributed etc)
+ 1. You keep track that I am the original author of these programs
+ 2. I am not reliable for any issue using any of these programs
+ 3. You protect your new published code under GPL v2.0 (so, it can be freely reused/redistributed etc)
 	
-Please read the whole disclaimer within the [LICENCE](LICENCE) file.
+Please read the whole disclaimer within the *LICENSE* file.
 
 ## Projects
 
