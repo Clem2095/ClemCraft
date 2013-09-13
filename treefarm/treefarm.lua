@@ -17,13 +17,9 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 ]]
 
-local saplings = 16
-local wood = 15
-
-local origin = true
-
-local ret = false
-local nbones = 20
+local wood = 2			-- slot for wood sample
+local saplings = 1	-- slot for saplings
+local origin = true	-- we start from.. the begining, yes
 
 local function placeSapling()
 	turtle.select(saplings)
@@ -31,22 +27,12 @@ local function placeSapling()
 	return turtle.detect()
 end
 
-local function fertilize(nb)
-	turtle.select(bonemeal)
-	for c=1,nb do
-		turtle.place()
-	end
-end
-
 local function isWood()
 	turtle.select(wood)
 	if turtle.compare() then
-		print('it\'s wood!')
 		return true
-	else
-		print('nope it\'s sapling ;\'(')
 	end
-	
+		
 	return false
 end
 
@@ -61,12 +47,12 @@ local function chop()
 		turtle.down()
 	end
 	
-	print('Chopped the whole thing bro\'')
+	print("Chopped the whole thing bro'")
 end
 
 local function plantOrChop()
 	if not turtle.detect() then
-		local success = placeSapling()
+		placeSapling()
 	else
 		if isWood() then
 			chop()
@@ -75,51 +61,60 @@ local function plantOrChop()
 	end
 end
 
+-- suck items all around (just in case)
 local function suck()
 	turtle.suck()
 	turtle.suckUp()
 	turtle.suckDown()
 end
 
+-- count how much wood do we have (for treefarmon)
 local function countWood()
 	local w = 0
-	for slot=1,15 do
+	for slot=2,16 do
 		w = w + turtle.getItemCount(slot)
 	end
 	
 	return w
 end
 
+-- if we cannot go further we've reach the end of the farm (except mobs?)
 local function comeBack()
-	local energy = turtle.getFuelLevel()
-	for slot=1,14 do
-		if turtle.getItemSpace(slot) == 0 then
-			print("drop slot's " .. slot .. " content")
-			turtle.select(slot)
-			turtle.dropDown(64)
-		end
-	end
-	
-	if turtle.getItemSpace(15) == 0 then
-		turtle.select(15)
-		turtle.dropDown(63)
-	end
-	
-	
-	local nbSaplings = turtle.getItemCount(16)
-	if nbSaplings > 50 then
-		turtle.select(16)
-		turtle.dropDown(nbSaplings / 2)
-	end
-	
-	local wlen = 5
-	if energy < 1000 then wlen = 10
-	elseif energy < 700 then wlen = 20
-	elseif energy < 200 then wlen = 35 end
-	
 	if origin then
 		origin = false
 	else
+		-- drop full stacks in item tesseract (or whatever is under the turtle)
+		for slot=3,16 do
+			if turtle.getItemSpace(slot) == 0 then
+				print("drop slot's " .. slot .. " content")
+				turtle.select(slot)
+				turtle.dropDown(64)
+			end
+		end
+	
+		-- keep one wood for comparison
+		if turtle.getItemSpace(wood) == 0 then
+			turtle.select(wood)
+			turtle.dropDown(63)
+		end
+	
+	
+		-- drop half the sapling we have if more than 50
+		-- keep a 'small stock' of sapling as it should get restored
+		local nbSaplings = turtle.getItemCount(saplings)
+		if nbSaplings > 50 then
+			turtle.select(16)
+			turtle.dropDown(nbSaplings / 2)
+		end
+
+		-- calculate how long we recharge battery
+		local wlen = 5
+		local energy = turtle.getFuelLevel()
+		
+		if energy < 1000 then wlen = 10
+		elseif energy < 700 then wlen = 20
+		elseif energy < 200 then wlen = 35 end
+		
 		sleep(wlen)
 		origin = true
 	end
@@ -128,6 +123,7 @@ local function comeBack()
 	turtle.turnLeft()
 end
 
+-- initialize rednet connection
 print('Opening wireless connection!')
 rednet.open('right')
 
@@ -144,19 +140,23 @@ while true do
 	if not turtle.forward() then
 		comeBack()
 		if not turtle.forward() then
+			-- TODO: manage that in treefarmon
 			rednet.broadcast("Help! I'm stuck (>_<)")
 		end
 	end
 	
+	-- get inventory stats
 	local nbWood = countWood()
 	local energy = turtle.getFuelLevel()
-	local saplings = turtle.getItemCount(16)
+	local saplings = turtle.getItemCount(saplings)
 	
+	-- broadcast stats for treefarmon
 	rednet.broadcast('wood: ' .. nbWood)
 	rednet.broadcast('energy: ' .. energy)
 	rednet.broadcast('saplings: ' .. saplings)
 end
 
+-- close rednet connection
 if rednet.isOpen('right') then
 	print('closing connection!')
 	rednet.close('right')
