@@ -1,4 +1,3 @@
-#!/usr/bin/env lua
 --[[
 All my ComputerCraft related scripts and more!
 Copyright (C) 2013  Clem2095

@@ -1,4 +1,3 @@
-#!/usr/bin/env lua
 --[[
 All my ComputerCraft related scripts and more!
 Copyright (C) 2013  Clem2095
@@ -20,6 +19,8 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 
 local saplings = 16
 local wood = 15
+
+local origin = true
 
 local ret = false
 local nbones = 20
@@ -90,6 +91,7 @@ local function countWood()
 end
 
 local function comeBack()
+	local energy = turtle.getFuelLevel()
 	for slot=1,14 do
 		if turtle.getItemSpace(slot) == 0 then
 			print("drop slot's " .. slot .. " content")
@@ -101,6 +103,25 @@ local function comeBack()
 	if turtle.getItemSpace(15) == 0 then
 		turtle.select(15)
 		turtle.dropDown(63)
+	end
+	
+	
+	local nbSaplings = turtle.getItemCount(16)
+	if nbSaplings > 50 then
+		turtle.select(16)
+		turtle.dropDown(nbSaplings / 2)
+	end
+	
+	local wlen = 5
+	if energy < 1000 then wlen = 10
+	elseif energy < 700 then wlen = 20
+	elseif energy < 200 then wlen = 35 end
+	
+	if origin then
+		origin = false
+	else
+		sleep(wlen)
+		origin = true
 	end
 	
 	turtle.turnLeft()
