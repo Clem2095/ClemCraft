@@ -22,8 +22,13 @@ local saplings = 1	-- slot for saplings
 local origin = true	-- we start from.. the begining, yes
 
 local function placeSapling()
-	turtle.select(saplings)
-	turtle.place()
+	local nbSaplings = turtle.getItemCount(saplings)
+	
+	if nbSaplings > 1 then
+		turtle.select(saplings)
+		turtle.place()
+	end
+	
 	return turtle.detect()
 end
 
@@ -63,6 +68,7 @@ end
 
 -- suck items all around (just in case)
 local function suck()
+	turtle.select(saplings)
 	turtle.suck()
 	turtle.suckUp()
 	turtle.suckDown()
