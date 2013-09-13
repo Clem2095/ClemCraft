@@ -14,7 +14,7 @@ Basically, you can clone, use, reuse, alter, re-distribute any code in this repo
 	2. I am not reliable for any issue using any of these programs
 	3. You protect your new published code under GPL v2.0 (so, it can be freely reused/redistributed etc)
 	
-Please read the whole disclaimer within the [LICENCE](LICENCE) file.
+Please read the whole disclaimer within the *LICENSE* file.
 
 ## Projects
 
